@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lcolok/IOS.git"
+    "url": "git+https://github.com/lcolok/imaex.git"
   },
   "keywords": [
     "require",
@@ -24,9 +24,9 @@
   "author": "lcolok",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lcolok/IOS/issues"
+    "url": "https://github.com/lcolok/imaex/issues"
   },
-  "homepage": "https://github.com/lcolok/IOS#readme",
+  "homepage": "https://github.com/lcolok/imaex#readme",
   "dependencies": {
     "caller-callsite": "^4.1.0",
     "require-dir-all": "^0.4.15"
