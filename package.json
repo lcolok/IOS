@@ -1,10 +1,12 @@
 {
   "name": "imaex",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Collect and forward. Import all modules into the directory and export them all at once.",
-  "main": "index.js",
+  "main": "dist/imaex.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --hot --inline",
+    "build": "babel src/index.js --out-file dist/imaex.js"
   },
   "repository": {
     "type": "git",
