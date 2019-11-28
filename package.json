@@ -1,6 +1,6 @@
 {
   "name": "imaex",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Collect and forward. Import all modules into the directory and export them all at once.",
   "main": "index.js",
   "scripts": {
