@@ -1,6 +1,7 @@
 import requireDir from "require-dir-all";
 import path from "path";
 import callerCallsite from "caller-callsite";
+import "babel-polyfill";
 
 export const imaex = (inputExports, customConfig) => {
   const makingExports = {};
@@ -34,3 +35,5 @@ export const imaex = (inputExports, customConfig) => {
 };
 
 export default imaex;
+
+module.exports = { imaex };
