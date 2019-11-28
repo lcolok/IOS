@@ -36,4 +36,4 @@ export const imaex = (inputExports, customConfig) => {
 
 export default imaex;
 
-module.exports = { imaex };
+module.exports = imaex;

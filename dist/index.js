@@ -55,4 +55,4 @@ var imaex = exports.imaex = function imaex(inputExports, customConfig) {
 exports.default = imaex;
 
 
-module.exports = { imaex: imaex };
+module.exports = imaex;
