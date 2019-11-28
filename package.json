@@ -30,5 +30,8 @@
   "dependencies": {
     "caller-callsite": "^4.1.0",
     "require-dir-all": "^0.4.15"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0"
   }
 }
