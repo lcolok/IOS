@@ -1,0 +1,34 @@
+{
+  "name": "imaex",
+  "version": "1.0.0",
+  "description": "Collect and forward. Import all modules into the directory and export them all at once.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lcolok/IOS.git"
+  },
+  "keywords": [
+    "require",
+    "import",
+    "modules",
+    "all",
+    "directory",
+    "forward",
+    "multiple",
+    "js",
+    "folder"
+  ],
+  "author": "lcolok",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lcolok/IOS/issues"
+  },
+  "homepage": "https://github.com/lcolok/IOS#readme",
+  "dependencies": {
+    "caller-callsite": "^4.1.0",
+    "require-dir-all": "^0.4.15"
+  }
+}
