@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot --inline",
+    "start": "nodemon -e js --ignore dist --exec 'npm run build && npm run CommonJS & npm run ES6'",
+    "CommonJS":"echo 'CommonJS test' && node ./test",
+    "ES6":"echo 'ES6 test' && babel-node ./test",
     "debug": "node --inspect ./dist/index.js",
     "build": "babel src -d dist"
   },
@@ -36,7 +38,9 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-module-resolver": "^3.2.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^2.0.1"
   }
 }

@@ -17,8 +17,6 @@ var _callerCallsite = require("caller-callsite");
 
 var _callerCallsite2 = _interopRequireDefault(_callerCallsite);
 
-require("babel-polyfill");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var imaex = exports.imaex = function imaex(inputExports, customConfig) {
