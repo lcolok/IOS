@@ -27,7 +27,7 @@ var imaex = exports.imaex = function imaex(inputExports, customConfig) {
     }
   }; //基础自带识别key:export_by_imaex
   var preExports = {};
-  var ignorePath = {};
+  var ignorePath = [];
   var defaultConfig = {
     // options
     recursive: true, // recursively go through subdirectories; default value shown
@@ -36,12 +36,13 @@ var imaex = exports.imaex = function imaex(inputExports, customConfig) {
     excludeDirs: /^(\.git|\.svn|node_modules)$/, // RegExp to ignore subdirectories; default value shown
     map: function map(r) {
       // console.log(r.filepath);
+
       var currentPath = _path2.default.parse(r.filepath).dir;
       if (r.exports.export_by_imaex && r.exports.export_by_imaex()) {
         //ignore 带有 export_by_imaex 的文件夹下的所有文件
         if (currentPath !== callerPath) {
           //排除caller自己的路径,这个尽管带有"export_by_imaex"标签,但不能被忽略
-          ignorePath[currentPath] = true;
+          ignorePath.push(currentPath);
         }
         return;
       }
@@ -70,9 +71,12 @@ var imaex = exports.imaex = function imaex(inputExports, customConfig) {
   (0, _requireDirAll2.default)(callerPath, defaultConfig);
 
   Object.keys(preExports).forEach(function (key) {
-    if (!ignorePath[preExports[key].path]) {
-      makingExports[key] = preExports[key].exports;
-    }
+    ignorePath.forEach(function (e) {
+      var thisPath = preExports[key].path;
+      if (!thisPath.match(e)) {
+        makingExports[key] = preExports[key].exports;
+      }
+    });
   });
 
   if (inputExports) {

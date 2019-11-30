@@ -8,7 +8,7 @@ export const imaex = (inputExports, customConfig) => {
     export_by_imaex: () => true
   }; //基础自带识别key:export_by_imaex
   const preExports = {};
-  const ignorePath = {};
+  let ignorePath = [];
   const defaultConfig = {
     // options
     recursive: true, // recursively go through subdirectories; default value shown
@@ -17,12 +17,13 @@ export const imaex = (inputExports, customConfig) => {
     excludeDirs: /^(\.git|\.svn|node_modules)$/, // RegExp to ignore subdirectories; default value shown
     map: function(r) {
       // console.log(r.filepath);
-      const currentPath = path.parse(r.filepath).dir;
+
+      let currentPath = path.parse(r.filepath).dir;
       if (r.exports.export_by_imaex && r.exports.export_by_imaex()) {
         //ignore 带有 export_by_imaex 的文件夹下的所有文件
         if (currentPath !== callerPath) {
           //排除caller自己的路径,这个尽管带有"export_by_imaex"标签,但不能被忽略
-          ignorePath[currentPath] = true;
+          ignorePath.push(currentPath);
         }
         return;
       }
@@ -51,9 +52,12 @@ export const imaex = (inputExports, customConfig) => {
   requireDir(callerPath, defaultConfig);
 
   Object.keys(preExports).forEach(key => {
-    if (!ignorePath[preExports[key].path]) {
-      makingExports[key] = preExports[key].exports;
-    }
+    ignorePath.forEach(e => {
+      let thisPath = preExports[key].path;
+      if (!thisPath.match(e)) {
+        makingExports[key] = preExports[key].exports;
+      }
+    });
   });
 
   if (inputExports) {
