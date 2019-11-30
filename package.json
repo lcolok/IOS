@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -e js --ignore dist --exec 'npm run build && npm run CommonJS & npm run ES6'",
-    "CommonJS":"echo 'CommonJS test' && node ./test",
-    "ES6":"echo 'ES6 test' && babel-node ./test",
+    "start": "nodemon -e js --ignore dist --exec 'npm run build && npm run ES6'",
+    "CommonJS": "echo 'CommonJS test' && node ./test3",
+    "ES6": "echo 'ES6 test' && babel-node ./test3",
     "debug": "node --inspect ./dist/index.js",
     "build": "babel src -d dist"
   },

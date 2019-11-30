@@ -3,7 +3,12 @@ import path from "path";
 import callerCallsite from "caller-callsite";
 
 export const imaex = (inputExports, customConfig) => {
-  const makingExports = {};
+  const callerPath = path.dirname(callerCallsite().getFileName());
+  const makingExports = {
+    export_by_imaex: () => true
+  }; //基础自带识别key:export_by_imaex
+  const preExports = {};
+  const ignorePath = {};
   const defaultConfig = {
     // options
     recursive: true, // recursively go through subdirectories; default value shown
@@ -11,6 +16,16 @@ export const imaex = (inputExports, customConfig) => {
     includeFiles: /^.*\.(js)$/, // RegExp to select files; default value shown
     excludeDirs: /^(\.git|\.svn|node_modules)$/, // RegExp to ignore subdirectories; default value shown
     map: function(r) {
+      // console.log(r.filepath);
+      const currentPath = path.parse(r.filepath).dir;
+      if (r.exports.export_by_imaex && r.exports.export_by_imaex()) {
+        //ignore 带有 export_by_imaex 的文件夹下的所有文件
+        if (currentPath !== callerPath) {
+          //排除caller自己的路径,这个尽管带有"export_by_imaex"标签,但不能被忽略
+          ignorePath[currentPath] = true;
+        }
+        return;
+      }
       Object.keys(r.exports).forEach(key => {
         if (key == "default") {
           let newBase;
@@ -20,17 +35,31 @@ export const imaex = (inputExports, customConfig) => {
           } else {
             newBase = r.base;
           }
-          makingExports[newBase] = r.exports.default;
+          preExports[newBase] = {
+            exports: r.exports.default,
+            path: currentPath
+          };
         } else {
-          makingExports[key] = r.exports[key];
+          preExports[key] = { exports: r.exports[key], path: currentPath };
         }
       });
     }
   };
 
   Object.assign(defaultConfig, customConfig);
-  requireDir(path.dirname(callerCallsite().getFileName()), defaultConfig);
-  Object.assign(inputExports, makingExports);
+
+  requireDir(callerPath, defaultConfig);
+
+  Object.keys(preExports).forEach(key => {
+    if (!ignorePath[preExports[key].path]) {
+      makingExports[key] = preExports[key].exports;
+    }
+  });
+
+  if (inputExports) {
+    Object.assign(inputExports, makingExports);
+  }
+  return makingExports;
 };
 
 export default imaex;
