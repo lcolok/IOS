@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+  value: true,
 });
 exports.imaex = undefined;
 
@@ -17,14 +17,18 @@ var _callerCallsite = require("caller-callsite");
 
 var _callerCallsite2 = _interopRequireDefault(_callerCallsite);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
-var imaex = exports.imaex = function imaex(inputExports, customConfig) {
-  var callerPath = _path2.default.dirname((0, _callerCallsite2.default)().getFileName());
+var imaex = (exports.imaex = function imaex(inputExports, customConfig) {
+  var callerPath = _path2.default.dirname(
+    (0, _callerCallsite2.default)().getFileName()
+  );
   var makingExports = {
     export_by_imaex: function export_by_imaex() {
       return true;
-    }
+    },
   }; //基础自带识别key:export_by_imaex
   var preExports = {};
   var ignorePath = [];
@@ -57,13 +61,13 @@ var imaex = exports.imaex = function imaex(inputExports, customConfig) {
           }
           preExports[newBase] = {
             exports: r.exports.default,
-            path: currentPath
+            path: currentPath,
           };
         } else {
           preExports[key] = { exports: r.exports[key], path: currentPath };
         }
       });
-    }
+    },
   };
 
   Object.assign(defaultConfig, customConfig);
@@ -71,21 +75,25 @@ var imaex = exports.imaex = function imaex(inputExports, customConfig) {
   (0, _requireDirAll2.default)(callerPath, defaultConfig);
 
   Object.keys(preExports).forEach(function (key) {
-    ignorePath.forEach(function (e) {
-      var thisPath = preExports[key].path;
-      if (!thisPath.match(e)) {
-        makingExports[key] = preExports[key].exports;
-      }
-    });
+    if (ignorePath.length == 0) {
+      makingExports[key] = preExports[key].exports;
+    } else {
+      ignorePath.forEach(function (e) {
+        var thisPath = preExports[key].path;
+
+        if (!thisPath.match(e)) {
+          makingExports[key] = preExports[key].exports;
+        }
+      });
+    }
   });
 
   if (inputExports) {
     Object.assign(inputExports, makingExports);
   }
   return makingExports;
-};
+});
 
 exports.default = imaex;
-
 
 module.exports = imaex;
