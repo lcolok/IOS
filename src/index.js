@@ -5,7 +5,7 @@ import callerCallsite from "caller-callsite";
 export const imaex = (inputExports, customConfig) => {
   const callerPath = path.dirname(callerCallsite().getFileName());
   const makingExports = {
-    export_by_imaex: () => true
+    export_by_imaex: () => true,
   }; //基础自带识别key:export_by_imaex
   const preExports = {};
   let ignorePath = [];
@@ -15,7 +15,7 @@ export const imaex = (inputExports, customConfig) => {
     indexAsParent: false, // add content of index.js/index.json files to parent object, not to parent.index
     includeFiles: /^.*\.(js)$/, // RegExp to select files; default value shown
     excludeDirs: /^(\.git|\.svn|node_modules)$/, // RegExp to ignore subdirectories; default value shown
-    map: function(r) {
+    map: function (r) {
       // console.log(r.filepath);
 
       let currentPath = path.parse(r.filepath).dir;
@@ -27,7 +27,7 @@ export const imaex = (inputExports, customConfig) => {
         }
         return;
       }
-      Object.keys(r.exports).forEach(key => {
+      Object.keys(r.exports).forEach((key) => {
         if (key == "default") {
           let newBase;
           if (r.base == "index") {
@@ -38,26 +38,31 @@ export const imaex = (inputExports, customConfig) => {
           }
           preExports[newBase] = {
             exports: r.exports.default,
-            path: currentPath
+            path: currentPath,
           };
         } else {
           preExports[key] = { exports: r.exports[key], path: currentPath };
         }
       });
-    }
+    },
   };
 
   Object.assign(defaultConfig, customConfig);
 
   requireDir(callerPath, defaultConfig);
 
-  Object.keys(preExports).forEach(key => {
-    ignorePath.forEach(e => {
-      let thisPath = preExports[key].path;
-      if (!thisPath.match(e)) {
-        makingExports[key] = preExports[key].exports;
-      }
-    });
+  Object.keys(preExports).forEach((key) => {
+    if (ignorePath.length == 0) {
+      makingExports[key] = preExports[key].exports;
+    } else {
+      ignorePath.forEach((e) => {
+        let thisPath = preExports[key].path;
+
+        if (!thisPath.match(e)) {
+          makingExports[key] = preExports[key].exports;
+        }
+      });
+    }
   });
 
   if (inputExports) {
